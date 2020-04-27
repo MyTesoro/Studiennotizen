@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mx_online.apps.MxOnlineConfig',
+    'apps.users.apps.MxOnlineConfig',
+    'apps.courses.apps.CoursesConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -104,7 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# user表在Django中已经注册了，appname = user
+AUTH_USER_MODEL = "users.UserProfile"
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
