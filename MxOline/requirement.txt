@@ -3,4 +3,4 @@ mysqlclient==1.4.6
 Pillow==7.1.2
 redis==3.4.1
 django-pure-pagination==0.3.0
-django-simple-captcha==0.5012
+django-simple-captcha==0.5.12

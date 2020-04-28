@@ -4,23 +4,25 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-GENDER_CHOICE = (('male','男'),('female','女'))
+GENDER_CHOICE = (('male', '男'), ('female', '女'))
+
 
 class BaseModel(models.Model):
-    add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
+    add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:
         # 将该基类(BaseModel)指定为抽象类，即该类不生成对应的数据库表
         # 只作为可继承的基类
         abstract = True
 
+
 class UserProfile(AbstractUser):
     nick_name = models.CharField(max_length=50, verbose_name="昵称", default="")
     birthday = models.DateField(verbose_name="生日", null=True, blank=True)
     gender = models.CharField(max_length=6, verbose_name="性别", choices=GENDER_CHOICE)
-    address = models.CharField(max_length=100, verbose_name='地址',default="" )
+    address = models.CharField(max_length=100, verbose_name='地址', default="")
     mobile = models.CharField(max_length=11, verbose_name='手机号码')
-    image = models.ImageField(verbose_name="用户头像",upload_to="header_image/%Y/%m", default="default.jpg")
+    image = models.ImageField(verbose_name="用户头像", upload_to="header_image/%Y/%m", default="default.jpg")
 
     class Meta:
         verbose_name = "用户信息"
