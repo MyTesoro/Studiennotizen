@@ -13,5 +13,4 @@ class CourseAdmin(object):
     list_filter = ["id", "name", "desc", "learn_times", "degree"]
 
 
-
 xadmin.site.register(Course, CourseAdmin)
