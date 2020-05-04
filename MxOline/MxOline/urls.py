@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import xadmin
+from django.views.generic import TemplateView
+from apps.users.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
+    path('', TemplateView.as_view(template_name='users/index.html'), name='index'),
+    path('login/', LoginView.as_view(), name='login'),
 ]
