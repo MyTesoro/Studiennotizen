@@ -1,0 +1,25 @@
+ # def post(self, request, *args, **kwargs):
+    #     # 实例化
+    #     login_form = LoginForm(request.POST)
+    #     login_state = {"msg": "", "login_form": login_form}
+    #     if login_form.is_valid():
+    #         # 用于通过用户名密码查询用户是否存在
+    #         user_name = login_form.cleaned_data["username"]
+    #         pass_word = login_form.cleaned_data["password"]
+    #         user = authenticate(username=user_name, password=pass_word)
+    #         db_user = UserProfile.objects.get(username=user_name)
+    #         # 判断user对象是否存在
+    #         if user is not None and db_user is not None:
+    #             if db_user.password == pass_word:
+    #                 login_state['msg'] = "登陆成功"
+    #                 login(request, user)
+    #                 return HttpResponseRedirect(reverse("index"))
+    #             else:
+    #                 login_state['msg'] = "用户名密码错误"
+    #                 return render(request, "users/login.html", login_state)
+    #         else:
+    #             login_state['msg'] = "用户名不存在"
+    #             return render(request, "users/login.html", login_state)
+    #     else:
+    #         # return redirect("/login", {"login_form": login_form})
+    #         return render(request, "users/login.html", login_state)

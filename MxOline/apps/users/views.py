@@ -4,6 +4,8 @@ from django.views.generic.base import View
 from apps.users.form import *
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from apps.users.models import UserProfile
+
 
 
 # Create your views here.
@@ -18,7 +20,7 @@ class LoginView(View):
             # 用于通过用户名密码查询用户是否存在
             user_name = login_form.cleaned_data["username"]
             pass_word = login_form.cleaned_data["password"]
-            user = authenticate(username=user_name, password=pass_word)
+            user = authenticate(username=user_name,password=pass_word)
             # 判断user对象师傅存在
             if user is not None:
                 # 不为空证明成功匹配到了用户
@@ -30,3 +32,4 @@ class LoginView(View):
         else:
             # return redirect("/login", {"login_form": login_form})
             return render(request, "users/login.html", {"login_form": login_form})
+

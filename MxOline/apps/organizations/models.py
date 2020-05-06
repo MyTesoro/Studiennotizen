@@ -31,6 +31,10 @@ class CourseOrg(BaseModel):
     is_gold_Award = models.BooleanField(verbose_name="是否金牌", default=False)
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name="所在城市")
 
+    def courses(self):
+        courses = self.course_set.filter(is_classics=True)[:3]
+        return courses
+
     class Meta:
         verbose_name = "机构信息"
         verbose_name_plural = verbose_name
@@ -58,3 +62,8 @@ class Teacher(BaseModel):
 
     def __str__(self):
         return self.teacher_name
+
+    def course_nums(self):
+        return self.course_set.all().count()
+
+
