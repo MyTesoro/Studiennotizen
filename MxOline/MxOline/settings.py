@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'xadmin',
     'apps.operations.apps.OperationsConfig',
     'apps.organizations.apps.OrganizationsConfig',
+    'pure_pagination',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,15 @@ AUTH_USER_MODEL = "users.UserProfile"
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
+
+PAGINATION_SETTINGS = {
+    # 主分页显示10个
+    'PAGE_RANGE_DISPLAYED': 10,
+    # 省略号前或后显示几个页码
+    'MARGIN_PAGES_DISPLAYED': 2,
+    # 是否显示第一页
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
 
 LANGUAGE_CODE = 'zh-hans'
 
