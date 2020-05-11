@@ -1,5 +1,6 @@
 from django.db import models
 from apps.users.models import BaseModel
+from apps.organizations.models import CourseOrg
 
 
 # Create your models here.
@@ -21,6 +22,7 @@ class Course(BaseModel):
     is_classic = models.BooleanField(default=False, verbose_name="是否经典")
     is_banner = models.BooleanField(default=False, verbose_name="是否广告位")
     course_image = models.ImageField(upload_to="courses/%Y/%m", verbose_name="封面", max_length=100)
+    belong_org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name="所属机构")
 
     class Meta:
         verbose_name = "课程信息"
