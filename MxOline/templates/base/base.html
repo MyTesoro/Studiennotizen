@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 {% load staticfiles %}
+{% load filter %}
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -25,7 +26,7 @@
                     {% if user.is_authenticated %}
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>EricLee<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
                                 <dt><img width="20" height="20"
                                          src="{% static 'media/image/2016/12/default_big_14.png' %}"/>
                                 </dt>
@@ -33,11 +34,11 @@
                             <div class="userdetail">
                                 <dl>
                                     <dt><img width="80" height="80"
-                                             src="{% static 'media/image/2016/12/default_big_14.png' %}"/>
+                                             src="{{ MEDIA_URL }}{{ user.image }}"/>
                                     </dt>
                                     <dd>
-                                        <h2>django</h2>
-                                        <p>EricLee</p>
+                                        <h2>{{ group.id|group_name:user.id }}</h2>
+                                        <p>{{ user.username }}</p>
                                     </dd>
                                 </dl>
                                 <div class="btn">
