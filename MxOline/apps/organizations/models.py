@@ -45,7 +45,6 @@ class CourseOrg(BaseModel):
 
 class Teacher(BaseModel):
     user = models.OneToOneField(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="用户")
-    affiliation = models.ForeignKey(CourseOrg, verbose_name="所属机构", on_delete=models.CASCADE)
     teacher_name = models.CharField(max_length=10, verbose_name="教师名")
     work_experience = models.IntegerField(verbose_name="工作年限", default=0)
     work_company = models.CharField(verbose_name="就职公司", max_length=20, default="")
@@ -55,6 +54,7 @@ class Teacher(BaseModel):
     click_nums = models.IntegerField(verbose_name="点击量", default=0)
     age = models.IntegerField(verbose_name="年龄", default=0)
     image = models.ImageField(upload_to="teacher/%Y/%m", verbose_name="头像", max_length=100)
+    affiliation = models.ForeignKey(CourseOrg, verbose_name="所属机构", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "教师信息"

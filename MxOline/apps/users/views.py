@@ -3,11 +3,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import View
 from apps.users.form import *
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
 from django.urls import reverse
 from apps.users.models import UserProfile
 
 
 # Create your views here.
+class CustomAuth(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            # 输入username和mobile都能查询到用户
+            user = UserProfile.objects.get(
+                Q(username=username) | Q(mobile=username) | Q(nick_name=username) | Q(
+                    email=username))
+            if user.check_password(password):  # 校验密码
+                return user
+        except Exception as e:
+            return None
+
+
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'users/login.html')
@@ -15,6 +30,7 @@ class LoginView(View):
     def post(self, request, *args, **kwargs):
         # 实例化
         login_form = LoginForm(request.POST)
+        login_status = {"msg": "", "login_form": login_form}
         if login_form.is_valid():
             # 用于通过用户名密码查询用户是否存在
             user_name = login_form.cleaned_data["username"]
@@ -26,8 +42,9 @@ class LoginView(View):
                 login(request, user)
                 return HttpResponseRedirect(reverse("index"))
             else:
-                # return redirect("/login", {"msg": "用户名密码错误", "login_form": login_form})
-                return render(request, "users/login.html", {"msg": "用户名密码错误", "login_form": login_form})
+                login_status['msg'] = '用户名密码错误'
+                return render(request, "users/login.html", login_status)
         else:
             # return redirect("/login", {"login_form": login_form})
-            return render(request, "users/login.html", {"login_form": login_form})
+            login_status['msg'] = '用户名不存在'
+        return render(request, "users/login.html", login_status)

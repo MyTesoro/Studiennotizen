@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # user表在Django中已经注册了，appname = user
 AUTH_USER_MODEL = "users.UserProfile"
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['apps.users.views.CustomAuth']
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 

@@ -75,6 +75,9 @@ html { overflow-y: scroll; }
 .clear{ clear:both;}
 .center{text-align:center;}
 .wp{width:1200px; margin:0 auto; position:relative;clear: both;}
+.wp .active{
+    color: #4FB137;
+}
 .clearfix::after {
     clear: both;
     content: " ";
