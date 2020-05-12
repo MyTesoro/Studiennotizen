@@ -16,8 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 import xadmin
-from django.views.generic import TemplateView
-from apps.users.views import *
 from django.conf.urls import url, include
 from django.views.static import serve
 from MxOline.settings import MEDIA_ROOT
@@ -25,11 +23,12 @@ from MxOline.settings import MEDIA_ROOT
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
-    path('', TemplateView.as_view(template_name='users/index.html'), name='index'),
-    path('login/', LoginView.as_view(), name='login'),
+
+    re_path(r'^', include(('apps.users.urls', 'organizations'), namespace='users')),
     re_path(r'^org/', include(('apps.organizations.urls', 'organizations'), namespace='org')),
     re_path(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
     re_path(r'^opt/', include(('apps.operations.urls', 'operations'), namespace='operations')),
+
     # 配置上传文件访问的url
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 ]

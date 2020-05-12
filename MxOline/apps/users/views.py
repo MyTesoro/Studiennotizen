@@ -40,7 +40,7 @@ class LoginView(View):
             if user is not None:
                 # 不为空证明成功匹配到了用户
                 login(request, user)
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('users:index'))
             else:
                 login_status['msg'] = '用户名密码错误'
                 return render(request, "users/login.html", login_status)
@@ -48,3 +48,7 @@ class LoginView(View):
             # return redirect("/login", {"login_form": login_form})
             login_status['msg'] = '用户名不存在'
         return render(request, "users/login.html", login_status)
+
+
+class LogoutView(View):
+    pass

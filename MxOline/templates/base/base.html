@@ -50,7 +50,7 @@
                     {% else %}
 
                         <a style="color:white" class="fr registerbtn" href="register.html">注册</a>
-                        <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                        <a style="color:white" class="fr loginbtn" href="{% url 'users:login' %}">登录</a>
                     {% endif %}
                 </div>
             </div>
@@ -58,7 +58,7 @@
 
             <div class="middle">
                 <div class="wp">
-                    <a href="{% url 'index' %}"><img class="fl" src="{% static 'images/logo.jpg' %}"/></a>
+                    <a href="{% url 'users:index' %}"><img class="fl" src="{% static 'images/logo.jpg' %}"/></a>
                     <div class="searchbox fr">
                         <div class="selectContainer fl">
                             <span class="selectOption" id="jsSelectOption" data-value="course">
@@ -83,7 +83,7 @@
                     <div class="wp">
                         <ul>
                             <li class="{% if n == 'fr' %}active{% endif %}">
-                                <a href="{% url 'index' %}?&n=fr">首页</a>
+                                <a href="{% url 'users:index' %}?&n=fr">首页</a>
                             </li>
                             <li class="{% if n == 'cl' %}active{% endif %}">
                                 <a href="{% url "course:course_list" %}?&n=cl">公开课
