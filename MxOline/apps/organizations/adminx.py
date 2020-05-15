@@ -19,7 +19,6 @@ class CityAdmin(object):
     # 搜索字段
     search_fields = ["city_name", "desc"]
     # 过滤器
-    list_filter = ["city_name"]
 
 
 class TeacherAdmin(object):
@@ -34,3 +33,4 @@ class TeacherAdmin(object):
 xadmin.site.register(CourseOrg, CourseOrgAdmin)
 xadmin.site.register(Teacher, TeacherAdmin)
 xadmin.site.register(City, CityAdmin)
+list_filter = ["city_name"]

@@ -54,3 +54,12 @@ class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect(reverse('users:index'))
+
+
+class RegisterView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request,"users/register.html")
+
+    def post(self, request, *args, **kwargs):
+        pass
+

@@ -35,6 +35,10 @@ class CourseOrg(BaseModel):
         courses = self.course_set.filter(is_classics=True)[:3]
         return courses
 
+    def teachercount(self):
+        teacher_num = self.teacher_set.all().count()
+        return teacher_num
+
     class Meta:
         verbose_name = "机构信息"
         verbose_name_plural = verbose_name
@@ -65,5 +69,3 @@ class Teacher(BaseModel):
 
     def course_nums(self):
         return self.course_set.all().count()
-
-

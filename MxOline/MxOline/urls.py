@@ -28,7 +28,7 @@ urlpatterns = [
     re_path(r'^', include(('apps.users.urls', 'organizations'), namespace='users')),
     re_path(r'^org/', include(('apps.organizations.urls', 'organizations'), namespace='org')),
     re_path(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
-    re_path(r'^opt/', include(('apps.operations.urls', 'operations'), namespace='operations')),
+    re_path(r'^opt/', include(('apps.operations.urls', 'operations'), namespace='opt')),
 
     # 配置上传文件访问的url
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
