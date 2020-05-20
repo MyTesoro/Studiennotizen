@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from apps.organizations.models import *
 from django.shortcuts import render_to_response
@@ -13,7 +13,6 @@ class OrgView(View):
         # 展示授课机构列表页
         all_orgs = CourseOrg.objects.all()
         all_city = City.objects.all()
-        org_nums = all_orgs.count()
 
         category = request.GET.get("ct", "")
         if category:
@@ -31,7 +30,6 @@ class OrgView(View):
 
         advence_list = CourseOrg.objects.order_by('-click_nums')[0:5]
 
-        org_nums = all_orgs.count()
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
@@ -40,6 +38,8 @@ class OrgView(View):
         # per_page每页显示多少个
         p = Paginator(all_orgs, per_page=5, request=request)
         orgs = p.page(page)
+
+        org_nums = all_orgs.count()
         return render(request, 'organizations/org-list.html',
                       {"orgs": orgs, "org_nums": org_nums, "all_city": all_city, 'category': category,
                        "city_id": city_id, "advence_list": advence_list, "all_orgs": all_orgs, "sort": sort})
@@ -54,6 +54,43 @@ class OrgAskView(View):
             return JsonResponse({"status": "success", "msg": "commit_success"})
         else:
             return JsonResponse({"status": "fail", "msg": "commit_error"})
+
+
+class TeacherView(View):
+    def get(self, request, *args, **kwargs):
+        all_teachers = Teacher.objects.all()
+
+        sort = request.GET.get("sort", "")
+        if sort:
+            all_teachers = CourseOrg.objects.order_by('-' + str(sort))
+
+        advence_list = Teacher.objects.order_by('-click_nums')[0:5]
+
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # per_page每页显示多少个
+        p = Paginator(all_teachers, per_page=5, request=request)
+        teachers = p.page(page)
+
+        teacher_nums = all_teachers.count()
+        return render(request, "organizations/teachers-list.html",
+                      {"all_teachers": all_teachers, "teachers": teachers, "teacher_nums": teacher_nums,
+                       "advence_list": advence_list})
+
+
+class TeacherDetailView(View):
+
+    def get(self, request, teacher_id, *args, **kwargs):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        teacher.click_nums += 1
+        teacher.save()
+
+        course_t = teacher.course_set.order_by('-click_nums')[:3]
+
+        return render(request, "organizations/teacher-detail.html", {"teacher": teacher, "course_t": course_t})
 
 
 class OrgDetailView(View):

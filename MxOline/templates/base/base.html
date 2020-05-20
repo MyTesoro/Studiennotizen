@@ -90,7 +90,7 @@
                                     <img class="hot" src="{% static 'images/nav_hot.png' %}"></a>
                             </li>
                             <li class="{% if n == 'tc' %}active{% endif %}">
-                                <a href="{% url "course:course_list" %}?&n='tc">授课教师</a>
+                                <a href="{% url "org:teacher_list" %}?&n='tc">授课教师</a>
                             </li>
                             <li class="{% if request.path|slice:'4' == '/org' %}active{% endif %}">
                                 <a href="{% url 'org:org_list' %}?&n=ol">授课机构</a>
