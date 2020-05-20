@@ -8,8 +8,8 @@
         <div class="wp">
             <div class="crumbs">
                 <ul>
-                    <li><a href="index.html">首页</a>></li>
-                    <li><a href="course-list.html">公开课程</a>></li>
+                    <li><a href="{% url 'users:index' %}">首页</a>></li>
+                    <li><a href="{% url 'course:course_list' %}">公开课程</a>></li>
                     <li>课程详情</li>
                 </ul>
             </div>
@@ -56,7 +56,11 @@
                                 <div class="btn colectgroupbtn" id="jsLeftBtn">
                                     {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                                 </div>
-                                <div class="buy btn"><a style="color: white" href="course-video.html">开始学习</a></div>
+                                <a style="color: white" href="{% url 'course:lesson' course.id %} ">
+                                    <div class="buy btn" id="startLearn">
+                                        {% if has_learn %}继续学习{% else %}开始学习{% endif %}
+                                    </div>
+                                </a>
                             </div>
                         </div>
                         <div class="group-share-box">
@@ -199,20 +203,20 @@
                 <div class="right layout">
                     <div class="head">相关课程推荐</div>
                     <div class="group_recommend">
-
-                        <dl>
-                            <dt>
-                                <a target="_blank" href="">
-                                    <img width="240" height="220" class="scrollLoading"
-                                         src="{% static 'media/courses/2016/11/540e57300001d6d906000338-240-135_mvvGYHL.jpg' %}"/>
-                                </a>
-                            </dt>
-                            <dd>
-                                <a target="_blank" href=""><h2> django实战项目</h2></a>
-                                <span class="fl">学习时长：<i class="key">0</i></span>
-                            </dd>
-                        </dl>
-
+                        {% for relative_course in relative_courses %}
+                            <dl>
+                                <dt>
+                                    <a target="_blank" href="">
+                                        <img width="100%" height="100%" class="scrollLoading"
+                                             src="{{ MEDIA_URL }}{{ relative_course.course_image }}"/>
+                                    </a>
+                                </dt>
+                                <dd>
+                                    <a target="_blank" href=""><h2> {{ relative_course.name }}</h2></a>
+                                    <span class="fl">学习时长：<i class="key">{{ relative_course.learn_times }}</i></span>
+                                </dd>
+                            </dl>
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -250,13 +254,41 @@
             $('#jsLeftBtn').on('click', function () {
                 add_fav($(this), {{ course.id }}, 1)
             })
-        })
+        });
 
         {#机构收藏的实现#}
         $(document).ready(function () {
             $('#jsRightBtn').on('click', function () {
                 add_fav($(this), {{ course.belong_org.id }}, 2)
             })
-        })
+        });
+    </script>
+    <script>
+        function have_learn(current_elem) {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '{% url 'opt:have' %}',
+                async: true,
+                data: {'course': {{ course.id }}},
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '用户未登录') {
+                            window.location.href = '{% url 'users:login' %}';
+                            alert(data.msg)
+                        }
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#startLearn').on('click', function () {
+                have_learn($(this), {{ course.id }})
+            })
+        });
     </script>
 {% endblock %}

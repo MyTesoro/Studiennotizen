@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
+
+from apps.courses.models import Course
+from apps.operations.models import Banner
+from apps.organizations.models import CourseOrg
 from apps.users.form import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
@@ -25,7 +29,9 @@ class CustomAuth(ModelBackend):
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'users/login.html')
+        next = request.GET.get("next", '')
+        banners = Banner.objects.all().order_by("index")[:4]
+        return render(request, 'users/login.html', {"next": next, "banners": banners})
 
     def post(self, request, *args, **kwargs):
         # 实例化
@@ -47,6 +53,9 @@ class LoginView(View):
         else:
             # return redirect("/login", {"login_form": login_form})
             login_status['msg'] = '用户名不存在'
+
+        banners = Banner.objects.all().order_by("index")
+
         return render(request, "users/login.html", login_status)
 
 
@@ -58,8 +67,17 @@ class LogoutView(View):
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
-        return render(request,"users/register.html")
+        return render(request, "users/register.html")
 
     def post(self, request, *args, **kwargs):
         pass
 
+
+class IndexView(View):
+    def get(self, request, *args, **kwargs):
+        banners = Banner.objects.all().order_by("index")
+        courses = Course.objects.filter(is_banner=False)[:8]
+        course_orgs = CourseOrg.objects.all()[:15]
+        small_banners = Course.objects.filter(is_banner=True)[:4]
+        return render(request, 'users/index.html', {"banners": banners, "courses": courses, "course_orgs": course_orgs,
+                                                    "small_banners": small_banners})

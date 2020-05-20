@@ -28,9 +28,9 @@ class CourseTagAdmin(object):
 
 
 class CourseResourceAdmin(object):
-    list_display = ['course', 'name', 'file', 'add_time']
-    search_fields = ['course', 'name', 'file']
-    list_filter = ['course', 'name', 'file', 'add_time']
+    list_display = ['course', 'resource_name', 'file_url', 'add_time']
+    search_fields = ['course', 'resource_name', 'file_url']
+    list_filter = ['course', 'resource_name', 'file_url', 'add_time']
 
 
 xadmin.site.register(Course, CourseAdmin)

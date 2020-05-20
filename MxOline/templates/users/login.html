@@ -62,9 +62,10 @@
             <div class="fl slide">
                 <div class="imgslide">
                     <ul class="imgs">
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/mysql.jpg' %}"/></a></li>
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/mysql.jpg' %}"/></a></li>
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/mysql.jpg' %}"/></a></li>
+                        {% for banner in banners %}
+                            <li><a href="{{ banner.url }}"><img width="483" height="472"
+                                                                src="{{ MEDIA_URL }}{{ banner.image }}"/></a></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="unslider-arrow prev"></div>
@@ -75,7 +76,8 @@
                     <h2 class="active">账号登录</h2>
                     <h2>动态登录</h2>
                 </div>
-                <form class="tab-form" action="{% url 'users:login' %}" method="post" autocomplete="off" id="form1">
+                <form class="tab-form" action="{% url 'users:login' %}?next={{ next }}" method="post" autocomplete="off"
+                      id="form1">
                     <div class="form-group marb20 ">
                         <input name="username" id="account_l" type="text" placeholder="手机号/邮箱"/>
                     </div>

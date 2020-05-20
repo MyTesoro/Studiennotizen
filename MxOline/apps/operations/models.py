@@ -21,6 +21,10 @@ class Banner(BaseModel):
     def __str__(self):
         return self.title
 
+    def static_url(self):
+        url = '{}'.format(self.url)
+        return url
+
 
 class UserAsk(BaseModel):
     name = models.CharField(max_length=20, verbose_name="姓名")
@@ -58,7 +62,7 @@ class UserFavorite(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return "{user}_{id}".format(user=self.user.username, id=self.fav_id)
+        return "{user}_{id}".format(user=self.user.name, id=self.fav_id)
 
 
 class UserMessage(BaseModel):

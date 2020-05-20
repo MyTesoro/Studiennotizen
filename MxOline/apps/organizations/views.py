@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import View
 from apps.organizations.models import *
 from django.shortcuts import render_to_response
@@ -42,7 +42,7 @@ class OrgView(View):
         orgs = p.page(page)
         return render(request, 'organizations/org-list.html',
                       {"orgs": orgs, "org_nums": org_nums, "all_city": all_city, 'category': category,
-                       "city_id": city_id, "advence_list": advence_list})
+                       "city_id": city_id, "advence_list": advence_list, "all_orgs": all_orgs, "sort": sort})
 
 
 class OrgAskView(View):
@@ -54,3 +54,27 @@ class OrgAskView(View):
             return JsonResponse({"status": "success", "msg": "commit_success"})
         else:
             return JsonResponse({"status": "fail", "msg": "commit_error"})
+
+
+class OrgDetailView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        org = CourseOrg.objects.get(id=int(org_id))
+        org.click_nums += 1
+        org.save()
+        print(org.click_nums)
+        return render(request, 'organizations/org-detail-homepage.html', {'org': org})
+
+
+class OrgDescDetailView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        return render(request, 'organizations/org-detail-desc.html')
+
+
+class OrgCourseDetailView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        return render(request, 'organizations/org-detail-course.html')
+
+
+class OrgTeacherDetailView(View):
+    def get(self, request, org_id, *args, **kwargs):
+        return render(request, 'organizations/org-detail-teachers.html')

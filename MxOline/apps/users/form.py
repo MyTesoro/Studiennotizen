@@ -3,8 +3,8 @@ from apps.users.confirm import pwd_re
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(required=True, min_length=6)
-    password = forms.CharField(required=True, min_length=13)
+    username = forms.CharField(required=True, min_length=3)
+    password = forms.CharField(required=True, min_length=6)
 
 
 class RegisterForm(forms.Form):

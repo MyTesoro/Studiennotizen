@@ -6,7 +6,7 @@
     <section>
         <div class="wp">
             <ul class="crumbs">
-                <li><a href="index.html">首页</a>></li>
+                <li><a href="{% url 'users:index' %}">首页</a>></li>
                 <li>课程机构</li>
             </ul>
         </div>
@@ -57,24 +57,24 @@
                             <ul class="tab_header">
                                 <li class="{% ifequal sort '' %}active{% endifequal %}"><a
                                         href="?ct={{ category }}&city={{ city_id }}">全部</a></li>
-                                <li class="{% ifequal sort 'students' %}active{% endifequal %}"><a
+                                <li class="{% ifequal sort 'students' %}active2{% endifequal %}"><a
                                         href="?sort=students&ct={{ category }}&city={{ city_id }}">学习人数 &#8595;</a></li>
-                                <li class="{% ifequal sort 'courses_num' %}active{% endifequal %}"><a
+                                <li class="{% ifequal sort 'courses_num' %}active2{% endifequal %}"><a
                                         href="?sort=courses_num&ct={{ category }}&city={{ city_id }}">课程数 &#8595;</a>
                                 </li>
                             </ul>
                         </div>
-                        {% for org in orgs.object_list %}
+                        {% for org in all_orgs %}
                             <dl class="des difdes">
                                 <dt>
-                                    <a href="org-detail-homepage.html">
+                                    <a href="{% url 'org:detail' org.id %}">
                                         <img width="100%" height="100%" class="scrollLoading"
                                              data-url="{{ MEDIA_URL }}{{ org.image }}"/>
                                     </a>
                                 </dt>
                                 <dd>
                                     <div class="clearfix">
-                                        <a href="org-detail-homepage.html">
+                                        <a href="{% url 'org:detail' org.id %}">
                                             <h1>{{ org.org_name }}</h1>
                                             <div class="pic fl">
 

@@ -25,7 +25,7 @@ urlpatterns = [
     path('xadmin/', xadmin.site.urls),
 
     # 根路径
-    re_path(r'^', include(('apps.users.urls', 'organizations'), namespace='users')),
+    re_path(r'^', include(('apps.users.urls', 'users'), namespace='users')),
     re_path(r'^org/', include(('apps.organizations.urls', 'organizations'), namespace='org')),
     re_path(r'^course/', include(('apps.courses.urls', 'courses'), namespace='course')),
     re_path(r'^opt/', include(('apps.operations.urls', 'operations'), namespace='opt')),
