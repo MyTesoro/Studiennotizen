@@ -100,7 +100,7 @@
                         </div>
                         <div class="pic">
                             <a href="#">
-                                <img width="150" height="80" src="{{ teacher.affiliation.image }}"/>
+                                <img width="150" height="80" src="{{ MEDIA_URL }}{{ teacher.affiliation.image }}"/>
                             </a>
                         </div>
                         <a href="org-detail-homepage.html">
@@ -120,7 +120,7 @@
                                     <a href="{% url 'org:teacher_detail' teacher_a.id %}">
                                         <dt>
                                             <img width="50" height="50" class="scrollLoading"
-                                                 src="{{ teacher_a.image }}"/>
+                                                 src="{{ MEDIA_URL }}{{ teacher_a.image }}"/>
                                         </dt>
                                     </a>
                                     <dd>

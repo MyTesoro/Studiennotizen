@@ -98,20 +98,44 @@ class OrgDetailView(View):
         org = CourseOrg.objects.get(id=int(org_id))
         org.click_nums += 1
         org.save()
-        print(org.click_nums)
-        return render(request, 'organizations/org-detail-homepage.html', {'org': org})
+
+        ad_teacher = org.teacher_set.all().order_by("-click_nums")[:3]
+        ad_course = org.course_set.all().order_by("-click_nums")[:4]
+
+        cur = 'home'
+
+        return render(request, 'organizations/org-detail-homepage.html',
+                      {'org': org, "cur": cur, "ad_course": ad_course, "ad_teacher": ad_teacher})
 
 
 class OrgDescDetailView(View):
     def get(self, request, org_id, *args, **kwargs):
-        return render(request, 'organizations/org-detail-desc.html')
+        org = CourseOrg.objects.get(id=int(org_id))
+        cur = 'desc'
+        return render(request, 'organizations/org-detail-desc.html', {"org": org, "cur": cur})
 
 
 class OrgCourseDetailView(View):
     def get(self, request, org_id, *args, **kwargs):
-        return render(request, 'organizations/org-detail-course.html')
+
+        org = CourseOrg.objects.get(id=int(org_id))
+        org_course = org.course_set.all()
+        cur = 'course'
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # per_page每页显示多少个
+        p = Paginator(org_course, per_page=5, request=request)
+        courses = p.page(page)
+
+        return render(request, 'organizations/org-detail-course.html',
+                      {"org": org, "cur": cur, "courses": courses})
 
 
 class OrgTeacherDetailView(View):
     def get(self, request, org_id, *args, **kwargs):
-        return render(request, 'organizations/org-detail-teachers.html')
+        org = CourseOrg.objects.get(id=int(org_id))
+        cur = 'teacher'
+        return render(request, 'organizations/org-detail-teachers.html', {"org": org, "cur": cur})

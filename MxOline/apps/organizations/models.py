@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Max
+
 from apps.users.models import UserProfile
 from apps.users.models import BaseModel
 
@@ -69,3 +71,7 @@ class Teacher(BaseModel):
 
     def course_nums(self):
         return self.course_set.all().count()
+
+    def hot(self):
+        max_nums = self.course_set.aggregate(Max("click_nums"))['click_nums__max']
+        return self.course_set.all().filter(click_nums=max_nums)

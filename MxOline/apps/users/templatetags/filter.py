@@ -7,6 +7,9 @@ register = Library()
 
 # 带一个参数的过滤器
 @register.filter
-def group_name(value,num):
+def group_name(value, num):
     groupname = Group.objects.filter(user=num)[0]
     return groupname
+
+
+

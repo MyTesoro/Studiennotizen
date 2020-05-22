@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
@@ -54,8 +55,6 @@ class LoginView(View):
             # return redirect("/login", {"login_form": login_form})
             login_status['msg'] = '用户名不存在'
 
-        banners = Banner.objects.all().order_by("index")
-
         return render(request, "users/login.html", login_status)
 
 
@@ -68,6 +67,39 @@ class LogoutView(View):
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "users/register.html")
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class UserCenterView(LoginRequiredMixin, View):
+    login_url = "/login/"
+
+    def get(self, request, *args, **kwargs):
+        current_page = 'info'
+        return render(request, "users/usercenter-info.html", {"current_page": current_page})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class UserfavView(LoginRequiredMixin, View):
+    login_url = "/login/"
+
+    def get(self, request, *args, **kwargs):
+        current_page = 'fav'
+        return render(request, "operations/usercenter-fav-course.html", {"current_page": current_page})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class UserMsgView(LoginRequiredMixin, View):
+    login_url = "/login/"
+
+    def get(self, request, *args, **kwargs):
+        current_page = 'msg'
+        return render(request, "operations/usercenter-message.html", {"current_page": current_page})
 
     def post(self, request, *args, **kwargs):
         pass

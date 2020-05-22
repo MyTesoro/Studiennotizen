@@ -1,4 +1,4 @@
-{% extends 'base/base2.html' %}
+{% extends 'base/orgbase.html' %}
 {% load static %}
 {% block title %}{% endblock %}
 {% block recommendation %}
@@ -39,7 +39,7 @@
             <ul class="crumbs">
                 <li><a href="{% url 'users:index' %}">首页</a>></li>
                 <li><a href="{% url 'org:org_list' %}">课程机构</a>></li>
-                <li><a href="{% url 'org:org_detail' %}"></a>机构首页</li>
+                <li><a href="{% url 'org:org_detail' org.id %}"></a>机构首页</li>
             </ul>
         </div>
     </section>
@@ -53,10 +53,11 @@
             <a class="green fr more" href="org-detail-course.html">查看更多 > </a>
         </div>
         <div class="brief group_list">
-            {% for course in org.course_set.all %}
+            {% for course in ad_course %}
                 <div class="module1_5 box">
                     <a href="{% url 'course:detail' course_id=course.id %}"><img width="214"
                                                                                  src="
+
                                                                                          {{ MEDIA_URL }}{{ course.course_image }}"/></a>
                     <div class="des">
                         <a href="#"><h2>{{ course.name }}</h2></a>
@@ -83,21 +84,21 @@
         </div>
 
         <div class="diarys">
-            {% for teacher in org.teacher_set.all %}
+            {% for teacher in ad_teacher %}
                 <div class="module5 share company-diary-box" style="padding:10px 0;">
                     <div class="left">
                         <img class="pic" src="{{ MEDIA_URL }}{{ teacher.image }}"/>
                         <p>昵称：{{ teacher.teacher_name }}</p>
                     </div>
-                    {% for t_course in teacher.course_set.all %}
+                    {% for hot_c in teacher.hot %}
                         <div class="right">
                             <div class="top">
                                 <div class="fl">
-                                    <a href=""><h1>{{ t_course.name }}</h1></a>
-                                    <span>发表于：{{ t_course.add_time }}</span>
+                                    <a href=""><h1>{{ hot_c.name }}</h1></a>
+                                    <span>发表于：{{ hot_c.add_time }}</span>
                                 </div>
                             </div>
-                            <div class="middle" style="border-bottom:0;">{{ t_course.desc }}</div>
+                            <div class="middle" style="border-bottom:0;">{{ hot_c.desc }}</div>
                         </div>
                     {% endfor %}
                 </div>
