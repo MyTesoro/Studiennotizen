@@ -67,6 +67,37 @@ class AddCommentView(View):
             return JsonResponse({"status": "fail", "msg": "参数错误"})
 
 
+class DeleteView(View):
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({"status": "fail", "msg": "用户未登录"})
+        use_fav_form = UserFavForm(request.POST)
+        if use_fav_form.is_valid():
+            fav_id = use_fav_form.cleaned_data["fav_id"]
+            fav_type = use_fav_form.cleaned_data["fav_type"]
+            # 判断用户是否已经收藏
+            existed_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
+            if existed_records:
+                # 收藏这条信息删除
+                existed_records.delete()
+                if fav_type == 1:
+                    course = Course.objects.get(id=fav_id)
+                    course.fav_nums -= 1
+                    course.save()
+                elif fav_type == 2:
+                    course_org = CourseOrg.objects.get(id=fav_id)
+                    course_org.fav_nums -= 1
+                    course_org.save()
+
+                elif fav_type == 3:
+                    teacher = Teacher.objects.get(id=fav_id)
+                    teacher.fav_nums -= 1
+                    teacher.save()
+                return JsonResponse({"status": "success", "msg": "删除成功"})
+            else:
+                JsonResponse({"status": "success", "msg": "参数错误"})
+
+
 class HaveLearn(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:

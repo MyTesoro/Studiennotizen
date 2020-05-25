@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+
+from apps.operations.models import UserFavorite
 from apps.organizations.models import *
 from django.shortcuts import render_to_response
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
@@ -90,7 +92,17 @@ class TeacherDetailView(View):
 
         course_t = teacher.course_set.order_by('-click_nums')[:3]
 
-        return render(request, "organizations/teacher-detail.html", {"teacher": teacher, "course_t": course_t})
+        has_fav_org = False
+        has_fav_teacher = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher.id, fav_type=3):
+                has_fav_teacher = True
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher.affiliation.id, fav_type=2):
+                has_fav_org = True
+
+        return render(request, "organizations/teacher-detail.html",
+                      {"teacher": teacher, "course_t": course_t, "has_fav_org": has_fav_org,
+                       "has_fav_teacher": has_fav_teacher})
 
 
 class OrgDetailView(View):
@@ -138,4 +150,9 @@ class OrgTeacherDetailView(View):
     def get(self, request, org_id, *args, **kwargs):
         org = CourseOrg.objects.get(id=int(org_id))
         cur = 'teacher'
-        return render(request, 'organizations/org-detail-teachers.html', {"org": org, "cur": cur})
+        has_fav_org = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=org.id, fav_type=2):
+                has_fav_org = True
+        return render(request, 'organizations/org-detail-teachers.html',
+                      {"org": org, "cur": cur, "has_fav_org": has_fav_org})

@@ -85,11 +85,11 @@
                             <p>{{ course.belong_org.org_tag }}</p>
                         </div>
                         <div class="pic">
-                            <a href="/company/14/">
+                            <a href="{% url 'course:detail' course.id %}/">
                                 <img width="150" height="80" src="{{ MEDIA_URL }}{{ course.belong_org.image }}"/>
                             </a>
                         </div>
-                        <a href="/company/14/">
+                        <a href="{% url 'course:detail' course.id %}">
                             <h2 class="center"
                                 title="{{ course.belong_org.org_name }}">{{ course.belong_org.org_name }}</h2>
                         </a>

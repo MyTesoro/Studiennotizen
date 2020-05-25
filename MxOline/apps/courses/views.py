@@ -41,7 +41,6 @@ class CourseDetailView(View):
         has_fav_course = False
         has_fav_org = False
         has_learn = False
-        print(UserCourse.objects.filter(user=request.user, course_id=course.id))
         if request.user.is_authenticated:
             # 查询用户是否收藏了该课程和机构 fav_type=1证明是课程收藏，如果有，证明用户收藏了这个课
             if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=1):

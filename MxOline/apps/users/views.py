@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 
 from apps.courses.models import Course
-from apps.operations.models import Banner
-from apps.organizations.models import CourseOrg
+from apps.operations.models import Banner, UserFavorite
+from apps.organizations.models import CourseOrg, Teacher
 from apps.users.form import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
@@ -83,12 +83,57 @@ class UserCenterView(LoginRequiredMixin, View):
         pass
 
 
-class UserfavView(LoginRequiredMixin, View):
+class UserfavCourseView(LoginRequiredMixin, View):
     login_url = "/login/"
 
     def get(self, request, *args, **kwargs):
         current_page = 'fav'
-        return render(request, "operations/usercenter-fav-course.html", {"current_page": current_page})
+        current_page2 = 'fav_c'
+        fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        fav_course_list = []
+        for fav_org in fav_courses:
+            course = Course.objects.get(id=fav_org.fav_id)
+            fav_course_list.append(course)
+        return render(request, "operations/usercenter-fav-course.html",
+                      {"current_page": current_page, "current_page2": current_page2,
+                       "fav_course_list": fav_course_list})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class UserfavOrgView(LoginRequiredMixin, View):
+    login_url = "/login/"
+
+    def get(self, request, *args, **kwargs):
+        current_page = 'fav'
+        current_page2 = 'fav_o'
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
+        fav_org_list = []
+        for fav_org in fav_orgs:
+            org = CourseOrg.objects.get(id=fav_org.fav_id)
+            fav_org_list.append(org)
+        return render(request, "operations/usercenter-fav-org.html",
+                      {"current_page": current_page, "current_page2": current_page2, "fav_org_list": fav_org_list})
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+
+class UserfavTeacherView(LoginRequiredMixin, View):
+    login_url = "/login/"
+
+    def get(self, request, *args, **kwargs):
+        current_page = 'fav'
+        current_page2 = 'fav_t'
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        fav_teacher_list = []
+        for fav_teacher in fav_teachers:
+            teacher = Teacher.objects.get(id=fav_teacher.fav_id)
+            fav_teacher_list.append(teacher)
+        return render(request, "operations/usercenter-fav-teacher.html",
+                      {"current_page": current_page, "current_page2": current_page2,
+                       "fav_teacher_list": fav_teacher_list})
 
     def post(self, request, *args, **kwargs):
         pass

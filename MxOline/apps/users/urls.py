@@ -12,7 +12,9 @@ urlpatterns = [
     path('user-course/',
          login_required(TemplateView.as_view(template_name='operations/usercenter-mycourse.html'), login_url="/login/",
                         ), {"current_page": 'course'}, name='user_course'),
-    path('user-fav/', UserfavView.as_view(), name='user_fav'),
+    path('user-fav-c/', UserfavCourseView.as_view(), name='user_fav_c'),
+    path('user-fav-o/', UserfavOrgView.as_view(), name='user_fav_o'),
+    path('user-fav-t/', UserfavTeacherView.as_view(), name='user_fav_t'),
     path('user-msg/', UserMsgView.as_view(), name='user_msg'),
 
 ]

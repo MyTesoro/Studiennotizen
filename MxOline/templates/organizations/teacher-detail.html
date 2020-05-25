@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="btn">
                                 <span class="fl btn1 collectionbtn" id="jsLeftBtn">
-                                     收藏
+                                    {% if has_fav_teacher %}已收藏{% else %}收藏{% endif %}
                                 </span>
                                     <span class="fr btn2 shareBtn bdsharebuttonbox"
                                           data-text="授课教师-{{ teacher.teacher_name }}-慕学网"
@@ -40,7 +40,7 @@
                             </dt>
                             <dd>
 
-                                <a href="/diary/hk_detail/10/">
+                                <a href="{% url 'org:teacher_detail' teacher.id %}">
                                     <h1>{{ teacher.teacher_name }}<span class="key picbig">金牌讲师</span></h1>
                                 </a>
                                 <ul class="cont">
@@ -57,7 +57,7 @@
                     <div class="left layout">
                         <div class="head">
                             <ul class="tab_header">
-                                <li class="active"><a href="/diary/hk_detail/10/">全部课程</a></li>
+                                <li class="active"><a href="{% url 'course:course_list' %}">全部课程</a></li>
                             </ul>
                         </div>
                         <div class="companycenter">
@@ -99,7 +99,7 @@
                             <p>{{ teacher.affiliation.org_tag }}</p>
                         </div>
                         <div class="pic">
-                            <a href="#">
+                            <a href="{% url 'org:org_detail' teacher.affiliation.id %}">
                                 <img width="150" height="80" src="{{ MEDIA_URL }}{{ teacher.affiliation.image }}"/>
                             </a>
                         </div>
@@ -107,7 +107,7 @@
                             <h2 class="center">{{ teacher.affiliation.org_name }}</h2>
                         </a>
                         <p class="center tell">地址：{{ teacher.affiliation.city }}</p>
-                        <a class="btn" id="jsRightBtn">收藏</a>
+                        <a class="btn" id="jsRightBtn">{% if has_fav_org %}已收藏{% else %}收藏{% endif %}</a>
                     </div>
                 </div>
                 <div class="butler_detail_cont">
@@ -140,4 +140,42 @@
         </div>
     </section>
 {% endblock %}
+{% block custom_js %}
+    <script>
+        function add_fav(current_elem, fav_id, fav_type) {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '{% url 'opt:fav' %}',
+                async: true,
+                data: {'fav_id': fav_id, 'fav_type': fav_type},
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '用户未登录') {
+                            window.location.href = '{% url 'users:login' %}';
+                            alert(data.msg)
+                        }
+                    } else if (data.status == 'success') {
+                        current_elem.text(data.msg)
+                    }
+                }
+            })
+        }
 
+        {#机构收藏的实现#}
+        $(document).ready(function () {
+            $('#jsRightBtn').on('click', function () {
+                add_fav($(this), {{ teacher.affiliation.id }}, 2)
+            })
+        });
+
+        $(document).ready(function () {
+            $('#jsLeftBtn').on('click', function () {
+                add_fav($(this), {{ teacher.id }}, 3)
+            })
+        });
+    </script>
+{% endblock %}
